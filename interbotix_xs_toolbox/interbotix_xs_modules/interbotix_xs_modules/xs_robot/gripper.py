@@ -183,6 +183,9 @@ class InterbotixGripperXSInterface:
         self.left_finger_index = self.core.js_index_map[self.gripper_info.joint_names[0]]
         self.left_finger_lower_limit = self.gripper_info.joint_lower_limits[0]
         self.left_finger_upper_limit = self.gripper_info.joint_upper_limits[0]
+        self.core.get_node().get_logger().info(f"Lower limit: {self.left_finger_lower_limit}")
+        self.core.get_node().get_logger().info(f"Upper limit: {self.left_finger_upper_limit}")
+
 
         if self.gripper_info.mode not in ('current', 'pwm'):
             self.core.get_node().get_logger().warn(
@@ -215,6 +218,7 @@ class InterbotixGripperXSInterface:
             ):
                 self.gripper_command.cmd = float(0.0)
                 self.core.pub_single.publish(self.gripper_command)
+                self.core.get_node().loginfo(f'publishing gripper command2{self.gripper_command}')
                 self.gripper_moving = False
 
     def gripper_controller(self, effort: float, delay: float) -> None:
@@ -235,6 +239,7 @@ class InterbotixGripperXSInterface:
             self.gripper_command.cmd < 0 and gripper_pos > self.left_finger_lower_limit
         ):
             self.core.pub_single.publish(self.gripper_command)
+            self.core.get_node().loginfo(f'publishing gripper command1{self.gripper_command}')
             self.gripper_moving = True
             self.core.get_node().get_clock().sleep_for(Duration(nanoseconds=int(delay*S_TO_NS)))
 
