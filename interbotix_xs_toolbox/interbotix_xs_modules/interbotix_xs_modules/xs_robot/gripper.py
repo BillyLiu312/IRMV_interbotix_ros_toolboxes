@@ -55,7 +55,7 @@ class InterbotixGripperXS:
         robot_name: str = None,
         gripper_pressure: float = 0.5,
         gripper_pressure_lower_limit: int = 150,
-        gripper_pressure_upper_limit: int = 350,
+        gripper_pressure_upper_limit: int = 450,
         topic_joint_states: str = 'joint_states',
         logging_level: LoggingSeverity = LoggingSeverity.INFO,
         node_name: str = 'robot_manipulation',
@@ -184,7 +184,9 @@ class InterbotixGripperXSInterface:
         self.left_finger_lower_limit = self.gripper_info.joint_lower_limits[0]
         self.left_finger_upper_limit = self.gripper_info.joint_upper_limits[0]
         self.core.get_node().get_logger().info(f"Lower limit: {self.left_finger_lower_limit}")
+        self.core.get_node().loginfo(f"Lower limit: {self.left_finger_lower_limit}")
         self.core.get_node().get_logger().info(f"Upper limit: {self.left_finger_upper_limit}")
+        self.core.get_node().loginfo(f"Upper limit: {self.left_finger_upper_limit}")
 
 
         if self.gripper_info.mode not in ('current', 'pwm'):
